@@ -61,17 +61,13 @@ adc /= 20;
 
   float voltage = adc * (3.3 / 4095.0);
 
-  // Tránh chia cho 0
   if (voltage < 0.1) voltage = 0.1;
 
-  // Tính Rs
   float Rs = ((3.3 - voltage) / voltage) * RL;
 
-  // Tính tỷ số
   float ratio = Rs / R0;
   float ppm = 116.6020682 * pow(ratio, -2.769034857);
 
-// Calibration factor
   ppm *= 90;
   return ppm;
 }
@@ -83,7 +79,6 @@ float readNoise() {
   int signalMin = 4095;
   unsigned long startMillis = millis();
   
-  // Lấy mẫu trong vòng 100ms
   while (millis() - startMillis < 100) {
     int sample = analogRead(NOISE_SENSOR_PIN);
     if (sample > signalMax) signalMax = sample;
@@ -123,8 +118,8 @@ void readSensorData() {
 
   //================ BLYNK SEND ==================
   if (Blynk.connected()) {
-    Blynk.virtualWrite(V0_GAS, co2_ppm);
-    Blynk.virtualWrite(V1_NOISE, noise_level_db);
+    Blynk.virtualWrite(V0, co2_ppm);
+    Blynk.virtualWrite(V1, noise_level_db);
   }
 
   //================ CO2 ALERT ==================
