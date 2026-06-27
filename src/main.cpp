@@ -61,18 +61,13 @@ adc /= 20;
 
   float voltage = adc * (3.3 / 4095.0);
 
-  // Tránh chia cho 0
   if (voltage < 0.1) voltage = 0.1;
 
-  // Tính Rs
   float Rs = ((3.3 - voltage) / voltage) * RL;
 
-  // Tính tỷ số
   float ratio = Rs / R0;
   float ppm = 116.6020682 * pow(ratio, -2.769034857);
 
-// Calibration factor
-  ppm *= 90;
   return ppm;
 }
 //====================================================
